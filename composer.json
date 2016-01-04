@@ -1,0 +1,18 @@
+{
+  "name": "efrane/laravel-deploy",
+  "keywords": [
+    "deploy", "laravel", "gulp", "artisan"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Stefan Graupner",
+      "email": "stefan.graupner@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "EFrane\\Deploy\\": "src/"
+    }
+  }
+}
