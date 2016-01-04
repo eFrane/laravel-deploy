@@ -36,8 +36,6 @@ class DeployCommand extends Command
 
     protected function output($output)
     {
-        if (!$this->option('silent')) {
-            $this->line(implode("\n", $output));
-        }
+        $this->line(implode("\n", $output));
     }
 }
