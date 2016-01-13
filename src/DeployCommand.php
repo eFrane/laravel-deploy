@@ -20,12 +20,26 @@ class DeployCommand extends Command
     public function fire()
     {
         if ($this->option('update-dependencies')) {
-            $this->execShellCmd('npm install');
-            $this->execShellCmd('gulp --production');
+            $this->execIf('npm install', function () { 
+                return file_exists(base_path('package.json')); 
+            });
+
+            $this->execIf('bower install', function () { 
+                return file_exists(base_path('bower.json')); 
+            });
+
+            $this->execIf('gulp --production', function () { 
+                return file_exists(base_path('gulpfile.js')); 
+            });
         }
 
         $this->call('clear-compiled');
         $this->call('optimize');
+    }
+
+    protected function execIf($cmd, \Closure $condition) {
+        if ($condition()) 
+            $this->execShellCmd($cmd);
     }
 
     protected function execShellCmd($cmd)
