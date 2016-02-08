@@ -38,8 +38,12 @@ class DeployCommand extends Command
     }
 
     protected function execIf($cmd, \Closure $condition) {
-        if ($condition()) 
+        if ($condition()) {
             $this->execShellCmd($cmd);
+            return true;
+        }
+
+        return false;
     }
 
     protected function execShellCmd($cmd)
