@@ -35,7 +35,16 @@ class ConditionalProcessTest extends PHPUnit_Framework_TestCase
 
     public function testDisabledOutput()
     {
-        $this->markTestIncomplete('Not yet implemented.');
+        $cmd = 'echo "Hello World"';
+        $condition = function () { return true; };
+
+        $process = new ConditionalProcess($cmd, $condition);
+
+        $actual = false;
+        $expected = '';
+
+        $this->assertTrue($process->execute($actual));
+        $this->assertEquals($expected, $actual);
     }
 
     public function getExecutesOutput()
@@ -62,8 +71,16 @@ class ConditionalProcessTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($process->execute($output));
     }
 
-    public function testFailsProcess()
+    /**
+     * @expectedException Symfony\Component\Process\Exception\ProcessFailedException
+     */
+    public function testFailsCommand()
     {
-        $this->markTestIncomplete('Not yet implemented.');
+        $condition = function () { return true; };
+        $cmd = 'this_is_no_command';
+
+        $process = new ConditionalProcess($cmd, $condition);
+
+        $this->assertFalse($process->execute($output));
     }
 }

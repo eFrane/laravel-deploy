@@ -39,15 +39,17 @@ class ConditionalProcess
         }
 
         $process = new Process($this->cmd);
-        if (is_bool($output) && !$output) {
-            $process->disableOutput();
-        }
 
         // NOTE: determine if keeping the return value might be useful
         $process->start();
         $process->wait();
 
-        $output = $process->getOutput();
+        if (is_bool($output) && !$output) {
+            $process->disableOutput();
+        } else {
+            $output = $process->getOutput();
+        }
+
         if (!$process->isSuccessful()) {
             throw new ProcessFailedException($process);
         }
