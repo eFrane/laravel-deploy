@@ -18,5 +18,8 @@
   "require": {
     "illuminate/console": "^5.1",
     "symfony/process": "^2.8"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^5.2"
   }
 }
