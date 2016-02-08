@@ -29,6 +29,11 @@ class FileExists extends Conditional
         static::$basePath = $basePath;
     }
 
+    public static function resetBasePath()
+    {
+        static::$basePath = '';
+    }
+
     protected function execute()
     {
         if (strlen($this->filename) == 0) {
