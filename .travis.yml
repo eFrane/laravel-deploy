@@ -12,3 +12,5 @@ matrix:
     - php: hhvm
 
 before_script: composer install --prefer-source --no-interaction --no-scripts
+
+script: vendor/bin/phpunit
