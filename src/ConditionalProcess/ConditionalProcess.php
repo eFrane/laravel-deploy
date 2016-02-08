@@ -22,6 +22,11 @@ class ConditionalProcess
         $this->condition = $condition;
     }
 
+    public function getCondition()
+    {
+        return $this->condition;
+    }
+
     /**
      * @param $output string|false
      * @return bool
@@ -39,6 +44,7 @@ class ConditionalProcess
         }
 
         // NOTE: determine if keeping the return value might be useful
+        $process->start();
         $process->wait();
 
         $output = $process->getOutput();
