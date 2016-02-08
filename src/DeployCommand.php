@@ -1,5 +1,7 @@
 <?php namespace EFrane\Deploy;
 
+use EFrane\Deploy\ConditionalProcess\ConditionalProcess;
+use EFrane\Deploy\ConditionalProcess\FileExists;
 use Illuminate\Console\Command;
 
 /**
@@ -9,7 +11,11 @@ use Illuminate\Console\Command;
  **/
 class DeployCommand extends Command
 {
-    protected $signature = 'deploy {--update-dependencies}';
+    protected $signature =
+        'deploy
+        {--update-dependencies : update dependency repositories like npm and run asset pipelines}
+        {--fix-missing : fix missing directories and permissions}
+        {--optimize : optimize for deployment}';
     protected $description = 'Run commands necessary to put the application in a usable state.';
 
     /**
@@ -20,40 +26,47 @@ class DeployCommand extends Command
     public function fire()
     {
         if ($this->option('update-dependencies')) {
-            $this->execIf('npm install', function () { 
-                return file_exists(base_path('package.json')); 
-            });
-
-            $this->execIf('bower install', function () { 
-                return file_exists(base_path('bower.json')); 
-            });
-
-            $this->execIf('gulp --production', function () { 
-                return file_exists(base_path('gulpfile.js')); 
-            });
+            $this->updateDependencies();
         }
 
-        $this->call('clear-compiled');
-        $this->call('optimize');
-    }
-
-    protected function execIf($cmd, \Closure $condition) {
-        if ($condition()) {
-            $this->execShellCmd($cmd);
-            return true;
+        if ($this->option('fix-missing')) {
+            $this->fixMissing();
         }
 
-        return false;
+        if ($this->option('optimize')) {
+            $this->call('clear-compiled');
+            $this->call('optimize');
+        }
     }
 
-    protected function execShellCmd($cmd)
+    protected function updateDependencies()
     {
-        exec($cmd, $output);
-        $this->output($output);
+        FileExists::setBasePath((function_exists('base_path')) ? base_path() : getcwd());
+
+        $commands = [
+            ['npm install', new FileExists('package.json')],
+            ['bower install', new FileExists('bower.json')],
+            ['gulp --production', new FileExists('gulpfile.js')],
+        ];
+
+        foreach ($commands as $command) {
+            list($cmd, $condition) = $command;
+            $this->conditionalProcess($cmd, $condition);
+        }
     }
 
-    protected function output($output)
+    protected function conditionalProcess($cmd, $condition)
     {
-        $this->line(implode("\n", $output));
+        $process = new ConditionalProcess($cmd, $condition);
+        $output = '';
+
+        if ($process->execute($output)) {
+            $this->line($output);
+        };
+    }
+
+    protected function fixMissing()
+    {
+        // TODO: fix missing directories and permissions
     }
 }
