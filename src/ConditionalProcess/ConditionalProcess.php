@@ -1,5 +1,6 @@
 <?php namespace EFrane\Deploy\ConditionalProcess;
 
+use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
 class ConditionalProcess
@@ -24,6 +25,7 @@ class ConditionalProcess
     /**
      * @param $output string|false
      * @return bool
+     * @throws ProcessFailedException If the process was executed but failed
      */
     public function execute(&$output)
     {
@@ -40,7 +42,10 @@ class ConditionalProcess
         $process->wait();
 
         $output = $process->getOutput();
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
 
-        return $process->isSuccessful();
+        return true;
     }
 }
