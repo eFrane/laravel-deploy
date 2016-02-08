@@ -3,6 +3,9 @@
 use EFrane\Deploy\ConditionalProcess\ConditionalProcess;
 use EFrane\Deploy\ConditionalProcess\FileExists;
 use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 /**
  * Deploy Command
@@ -16,6 +19,7 @@ class DeployCommand extends Command
         {--update-dependencies : update dependency repositories like npm and run asset pipelines}
         {--fix-missing : fix missing directories and permissions}
         {--optimize : optimize for deployment}';
+
     protected $description = 'Run commands necessary to put the application in a usable state.';
 
     /**
@@ -41,6 +45,8 @@ class DeployCommand extends Command
 
     protected function updateDependencies()
     {
+        $this->info('Updating dependencies and running asset pipelines...');
+
         FileExists::setBasePath((function_exists('base_path')) ? base_path() : getcwd());
 
         $commands = [
@@ -60,13 +66,40 @@ class DeployCommand extends Command
         $process = new ConditionalProcess($cmd, $condition);
         $output = '';
 
-        if ($process->execute($output)) {
+        $this->line("Running `{$cmd}`...");
+        try {
+            if ($process->execute($output) && $this->verbosity == OutputInterface::VERBOSITY_VERBOSE) {
+                $this->line($output);
+            } else {
+                $this->info('Success!');
+            }
+        } catch (ProcessFailedException $e) {
+            $this->error("Failed:");
             $this->line($output);
-        };
+        }
     }
 
     protected function fixMissing()
     {
-        // TODO: fix missing directories and permissions
+        $this->info('Validating required directories...');
+
+        $dirs = new Collection([
+            'bootstrap/cache',
+            'storage/app',
+            'storage/framework/cache',
+            'storage/framework/sessions',
+            'storage/framework/views',
+            'storage/logs',
+        ]);
+
+        $perms = 0x775;
+
+        $dirs->each(function ($dir) use ($perms) {
+            $this->line("Creating/checking {$dir}...");
+
+            if (!is_dir($dir)) {
+                mkdir($dir, $perms, true);
+            }
+        });
     }
 }
