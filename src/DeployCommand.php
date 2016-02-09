@@ -1,7 +1,7 @@
 <?php namespace EFrane\Deploy;
 
-use EFrane\Deploy\ConditionalProcess\ConditionalProcess;
-use EFrane\Deploy\ConditionalProcess\FileExists;
+use EFrane\ConditionalProcess\ConditionalProcess;
+use EFrane\ConditionalProcess\Conditionals\FileExists;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Symfony\Component\Console\Output\OutputInterface;
