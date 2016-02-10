@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/eFrane/laravel-deploy.svg?branch=master)](https://travis-ci.org/eFrane/laravel-deploy)
-
 # Laravel Deploy
 
 This package provides the `artisan deploy`-command and aims to simplify the 
@@ -24,7 +22,7 @@ application. Also, don't forget to add the service provider to your
 
 ## Options
 
-**`--updateDependencies`**
+**`--update-dependencies`**
 
 Updates dependencies and assets using the following systems (only if
 a corresponding config file is found):
@@ -33,10 +31,16 @@ a corresponding config file is found):
 - bower
 - gulp
 
-**`--fixMissing`**
+**`--fix-missing`**
 
 Fixes missing default directories and permissions for the storage directories.
 
 **`--optimize`**
 
 Combines `clear-compiled` and `optimize`.
+
+## License
+
+This package is released under the terms of the MIT license.
+
+
