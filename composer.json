@@ -16,9 +16,9 @@
     }
   },
   "require": {
-    "php": "^5.6||^7.0",
+    "php": ">=5.6",
     "illuminate/console": ">=5.1",
-    "symfony/process": ">=2.8",
+    "symfony/process": ">=2.7",
     "efrane/conditional-process": ">=1.0"
   },
   "require-dev": {
