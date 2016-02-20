@@ -57,13 +57,15 @@ class DeployCommand extends Command
 
         foreach ($commands as $command) {
             list($cmd, $condition) = $command;
-            $this->conditionalProcess($cmd, $condition);
+            $this->conditionalProcess($cmd, $condition, 0);
         }
     }
 
-    protected function conditionalProcess($cmd, $condition)
+    protected function conditionalProcess($cmd, $condition, $timeout)
     {
         $process = new ConditionalProcess($cmd, $condition);
+        $process->setTimeout($timeout);
+
         $output = '';
 
         $this->line("Running `{$cmd}`...");
