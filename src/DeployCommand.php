@@ -22,6 +22,8 @@ class DeployCommand extends Command
 
     protected $description = 'Run commands necessary to put the application in a usable state.';
 
+    protected $verbosity = 0;
+
     /**
      * Execute the console command.
      *
