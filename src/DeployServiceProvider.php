@@ -1,4 +1,6 @@
-<?php namespace EFrane\Deploy;
+<?php
+
+namespace EFrane\Deploy;
 
 use Illuminate\Support\ServiceProvider;
 

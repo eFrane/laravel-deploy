@@ -1,4 +1,6 @@
-<?php namespace EFrane\Deploy;
+<?php
+
+namespace EFrane\Deploy;
 
 use EFrane\ConditionalProcess\ConditionalProcess;
 use EFrane\ConditionalProcess\Conditionals\FileExists;
@@ -8,7 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
 /**
- * Deploy Command
+ * Deploy Command.
  *
  * Runs commands and scripts necessary to put the application in a usable state.
  **/
@@ -78,7 +80,7 @@ class DeployCommand extends Command
                 $this->info('Success!');
             }
         } catch (ProcessFailedException $e) {
-            $this->error("Failed:");
+            $this->error('Failed:');
             $this->line($output);
         }
     }
