@@ -96,7 +96,7 @@ class DeployCommand extends Command
             'storage/logs',
         ]);
 
-        $perms = 0775;
+        $perms = 0755;
 
         $dirs->each(function ($dir) use ($perms) {
             $this->line("Creating/checking {$dir}...");
