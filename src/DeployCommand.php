@@ -3,6 +3,7 @@
 use EFrane\ConditionalProcess\ConditionalProcess;
 use EFrane\ConditionalProcess\Conditionals\FileExists;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Support\Collection;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
@@ -27,21 +28,26 @@ class DeployCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @param ConfigRepository $config Laravel configuration repository
+     * @return void
      */
-    public function fire()
+    public function fire(ConfigRepository $config)
     {
-        if ($this->option('update-dependencies')) {
+        if ($this->option('update-dependencies') || $config->get('laraveldeploy.updateDependencies')) {
             $this->updateDependencies();
         }
 
-        if ($this->option('fix-missing')) {
+        if ($this->option('fix-missing') || $config->get('laraveldeploy.fixMissing')) {
             $this->fixMissing();
         }
 
-        if ($this->option('optimize')) {
+        if ($this->option('optimize') || $config->get('laraveldeploy.optimize')) {
             $this->call('clear-compiled');
             $this->call('optimize');
+        }
+
+        if (is_array($config->get('laraveldeploy.additionalCommands'))) {
+            $this->callAdditionalCommands($config);
         }
     }
 
@@ -103,6 +109,21 @@ class DeployCommand extends Command
 
             if (!is_dir($dir)) {
                 mkdir($dir, $perms, true);
+            }
+        });
+    }
+
+    protected function callAdditionalCommands(ConfigRepository $config)
+    {
+        /* @var $additionalCommands \Illuminate\Support\Collection */
+        $additionalCommands = collect($config->get('laraveldeploy.additionalCommands'));
+
+        $additionalCommands->map(function ($commandString) {
+            try {
+                $this->callSilent($commandString);
+                $this->info('Successfully called `' . $commandString . '`');
+            } catch (\Exception $e) {
+                $this->error('Failed calling `' . $commandString . '`');
             }
         });
     }
