@@ -31,6 +31,7 @@ class DeployCommand extends Command
      * Execute the console command.
      *
      * @param ConfigRepository $config Laravel configuration repository
+     *
      * @return void
      */
     public function fire(ConfigRepository $config)
@@ -123,9 +124,9 @@ class DeployCommand extends Command
         $additionalCommands->map(function ($commandString) {
             try {
                 $this->callSilent($commandString);
-                $this->info('Successfully called `' . $commandString . '`');
+                $this->info('Successfully called `'.$commandString.'`');
             } catch (\Exception $e) {
-                $this->error('Failed calling `' . $commandString . '`');
+                $this->error('Failed calling `'.$commandString.'`');
             }
         });
     }
