@@ -14,6 +14,6 @@ class DeployServiceProvider extends ServiceProvider
     public function register()
     {
         $this->commands([DeployCommand::class]);
-        $this->publishes([__DIR__ . '/../config/laraveldeploy.php'], 'config');
+        $this->publishes([__DIR__ . '/../config/laraveldeploy.php' => config_path('laraveldeploy.php')], 'config');
     }
 }
