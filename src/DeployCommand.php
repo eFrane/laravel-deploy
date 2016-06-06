@@ -143,9 +143,9 @@ class DeployCommand extends Command
                     $this->call($commandString);
                 }
 
-                $this->info('Successfully called `' . $commandString . '`');
+                $this->info('Successfully called `'.$commandString.'`');
             } catch (\Exception $e) {
-                $this->error('Failed calling `' . $commandString . '`');
+                $this->error('Failed calling `'.$commandString.'`');
             }
         });
     }
