@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'updateDependencies'    => false,
-    'fixMissingDirectories' => false,
-    'optimize'              => true,
+    'updateDependencies' => false,
+    'fixMissing'         => false,
+    'optimize'           => true,
 
     'additionalCommands' => [],
 ];

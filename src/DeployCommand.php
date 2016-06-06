@@ -46,7 +46,7 @@ class DeployCommand extends Command
             $this->updateDependencies();
         }
 
-        if (($this->option('fix-missing') || $default['fixMissingDirectories'])
+        if (($this->option('fix-missing') || $default['fixMissing'])
             && !$this->option('no-fix-missing')
         ) {
             $this->fixMissing();
