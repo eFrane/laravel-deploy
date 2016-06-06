@@ -61,8 +61,8 @@ class DeployCommand extends Command
             $this->call('optimize');
         }
 
-        if (is_array($config->get('laraveldeploy.additionalCommands'))
-            && !$this->option('no-additonal-commands')
+        if (is_array($default['additionalCommands']) && count($default['additionalCommands']) > 0
+            && !$this->option('no-additional-commands')
         ) {
             $this->callAdditionalCommands($config);
         }
@@ -110,7 +110,7 @@ class DeployCommand extends Command
     {
         $this->info('Validating required directories...');
 
-        $dirs = new Collection([
+        $dirs = collect([
             'bootstrap/cache',
             'storage/app',
             'storage/framework/cache',
