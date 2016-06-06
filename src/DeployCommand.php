@@ -42,7 +42,8 @@ class DeployCommand extends Command
         $default = $config->get('laraveldeploy');
 
         if (($this->option('update-dependencies') || $default['updateDependencies'])
-            && !$this->option('no-update-dependencies')) {
+            && !$this->option('no-update-dependencies')
+        ) {
             $this->updateDependencies();
         }
 
