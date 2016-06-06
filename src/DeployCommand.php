@@ -24,7 +24,8 @@ class DeployCommand extends Command
         {--optimize : optimize for deployment}
         {--no-update-dependencies : do not update dependencies (overwrites default setting)}
         {--no-fix-missing : do not fix missing (overwrites default setting)}
-        {--no-optimize : do not optimize (overwrites default setting)}';
+        {--no-optimize : do not optimize (overwrites default setting)}
+        {--no-additional-commands : do not run additional commands}';
 
     protected $description = 'Run commands necessary to put the application in a usable state.';
 
@@ -60,7 +61,9 @@ class DeployCommand extends Command
             $this->call('optimize');
         }
 
-        if (is_array($config->get('laraveldeploy.additionalCommands'))) {
+        if (is_array($config->get('laraveldeploy.additionalCommands'))
+            && !$this->option('no-additonal-commands')
+        ) {
             $this->callAdditionalCommands($config);
         }
     }
