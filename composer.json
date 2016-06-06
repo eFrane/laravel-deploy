@@ -20,7 +20,7 @@
     "illuminate/console": ">=5.1",
     "symfony/process": ">=2.7",
     "efrane/conditional-process": ">=1.1",
-    "illuminate/support": "^5.2"
+    "illuminate/support": ">=5.1"
   },
   "require-dev": {
     "phpunit/phpunit": "^5.2"
