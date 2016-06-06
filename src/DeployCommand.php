@@ -21,7 +21,10 @@ class DeployCommand extends Command
         'deploy
         {--update-dependencies : update dependency repositories like npm and run asset pipelines}
         {--fix-missing : fix missing directories and permissions}
-        {--optimize : optimize for deployment}';
+        {--optimize : optimize for deployment}
+        {--no-update-dependencies : do not update dependencies (overwrites default setting)}
+        {--no-fix-missing : do not fix missing (overwrites default setting)}
+        {--no-optimize : do not optimize (overwrites default setting)}';
 
     protected $description = 'Run commands necessary to put the application in a usable state.';
 
@@ -36,15 +39,22 @@ class DeployCommand extends Command
      */
     public function fire(ConfigRepository $config)
     {
-        if ($this->option('update-dependencies') || $config->get('laraveldeploy.updateDependencies')) {
+        $default = $config->get('laraveldeploy');
+
+        if (($this->option('update-dependencies') || $default['updateDependencies'])
+            && !$this->option('no-update-dependencies')) {
             $this->updateDependencies();
         }
 
-        if ($this->option('fix-missing') || $config->get('laraveldeploy.fixMissing')) {
+        if (($this->option('fix-missing') || $default['fixMissingDirectories'])
+            && !$this->option('no-fix-missing')
+        ) {
             $this->fixMissing();
         }
 
-        if ($this->option('optimize') || $config->get('laraveldeploy.optimize')) {
+        if (($this->option('optimize') || $default['optimize'])
+            && !$this->option('no-optimize')
+        ) {
             $this->call('clear-compiled');
             $this->call('optimize');
         }
@@ -123,10 +133,15 @@ class DeployCommand extends Command
 
         $additionalCommands->map(function ($commandString) {
             try {
-                $this->callSilent($commandString);
-                $this->info('Successfully called `'.$commandString.'`');
+                if ($this->option('quiet')) {
+                    $this->callSilent($commandString);
+                } else {
+                    $this->call($commandString);
+                }
+
+                $this->info('Successfully called `' . $commandString . '`');
             } catch (\Exception $e) {
-                $this->error('Failed calling `'.$commandString.'`');
+                $this->error('Failed calling `' . $commandString . '`');
             }
         });
     }
