@@ -28,8 +28,8 @@ only runs the `--optimize`-option as described in the Options section below.
 Default options can be changed in the `laraveldeploy.php` config file which
 is providable via `./artisan vendor:publish`. If so desired, additional
 console commands can be added to the deploy process by simply adding their
-command line call strings (see [`Command::call()`]()) to the `additonalCommands`
-config option like so:
+command line call strings (see [`Command::call()`](https://laravel.com/docs/5.1/artisan#calling-commands-via-code)) 
+to the `additonalCommands` config option like so:
 
 ```
 <?php return [
@@ -47,14 +47,9 @@ directories and permissions.
 
 ## Options
 
-**`--[no-]-update-dependencies`**
+**`--no-additional-commands`**
 
-Updates dependencies and assets using the following systems (only if
-a corresponding config file is found):
-
-- npm
-- bower
-- gulp
+Disables running of additional commands.
 
 **`--[no-]-fix-missing`**
 
@@ -64,11 +59,16 @@ Fixes missing default directories and permissions for the storage directories.
 
 Combines `clear-compiled` and `optimize`.
 
-## License
+**`--[no-]-update-dependencies`**
 
-This package is released under the terms of the MIT license.
+Updates dependencies and assets using the following systems (only if
+a corresponding config file is found):
 
-## Disclaimer on contributions
+- npm
+- bower
+- gulp
+
+## Contributing
 
 I am mainly developing this package for my own Laravel deployments, thus
 the feature set is very biased. However, if you find yourself needing
@@ -80,3 +80,7 @@ it and sending a pull request.
 Unfortunately, I currently have no clue how to test this functionality other
 than using it in a laravel project. Thus, contributions in terms of making
 this testable are especially welcome.
+
+## License
+
+This package is released under the terms of the MIT license.
