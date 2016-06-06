@@ -6,7 +6,6 @@ use EFrane\ConditionalProcess\ConditionalProcess;
 use EFrane\ConditionalProcess\Conditionals\FileExists;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
-use Illuminate\Support\Collection;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
