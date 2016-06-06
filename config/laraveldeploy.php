@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'updateDependencies'    => true,
-    'fixMissingDirectories' => true,
+    'updateDependencies'    => false,
+    'fixMissingDirectories' => false,
     'optimize'              => true,
 
     'additionalCommands' => [],
