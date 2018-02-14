@@ -37,7 +37,7 @@ class DeployCommand extends Command
      *
      * @return void
      */
-    public function fire(ConfigRepository $config)
+    public function handle(ConfigRepository $config)
     {
         $default = $config->get('laraveldeploy');
 
