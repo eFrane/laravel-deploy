@@ -75,8 +75,6 @@ class DeployCommand extends Command
 
         $commands = [
             ['npm install', new FileExists('package.json')],
-            ['bower install', new FileExists('bower.json')],
-            ['gulp --production', new FileExists('gulpfile.js')],
         ];
 
         foreach ($commands as $command) {
