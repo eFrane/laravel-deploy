@@ -1,3 +1,5 @@
+**This project has been abandoned and will no longer be maintened.**
+
 # Laravel Deploy
 
 This package provides the `artisan deploy`-command and aims to simplify the 
